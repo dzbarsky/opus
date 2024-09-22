@@ -1,0 +1,52 @@
+package(default_visibility = ['//visibility:public'])
+
+cc_binary(
+    name = 'opus_demo',
+    deps = [':opus'],
+    srcs = ['src/opus_demo.c'],
+)
+
+cc_binary(
+    name = 'repacketizer_demo',
+    deps = [':opus'],
+    srcs = ['src/repacketizer_demo.c'],
+)
+
+cc_library(
+    name = 'opus',
+    srcs = glob(
+        [
+            'celt/*.c',
+            'celt/*.h',
+            'include/*.h',
+            'silk/*.c',
+            'silk/*.h',
+            'silk/float/*.c',
+            'silk/float/*.h',
+            'src/*.h',
+            'src/*.c',
+        ],
+        exclude = ['**/*demo.c'],
+    ) + [
+        'config.h',
+    ],
+    includes = [
+      'celt',
+      'silk',
+      'silk/float',
+      'include',
+    ],
+    local_defines = ['HAVE_CONFIG_H'],
+    copts = [
+        '-fvisibility=hidden',
+        '-Wno-unused-variable',
+        '-Wno-#warnings',
+    ],
+)
+
+genrule(
+    name = 'gen_config',
+    srcs = ['xplat_config.h'],
+    outs = ['config.h'],
+    cmd = 'cp $< $@',
+)

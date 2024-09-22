@@ -1,0 +1,18 @@
+[
+    cc_test(
+        name = test,
+        srcs = [test + ".c", "opus_encode_regressions.c", "test_opus_common.h"],
+        deps = ["//:opus"],
+        copts = ["-Wno-nonnull"],
+    )
+    for test in [
+        "test_opus_api",
+        "test_opus_decode",
+        # Some neural network stuff that we don't enable yet.
+        # "test_opus_dred",
+        "test_opus_encode",
+        "test_opus_extensions",
+        "test_opus_padding",
+        "test_opus_projection",
+    ]
+]
